@@ -36,6 +36,7 @@ set (HEADERS
 	ApeIManualPass.h
 	ApeIManualMaterial.h
 	ApeIFileMaterial.h
+	ApeIFileTexture.h
 	ApeINode.h
 	ApeIPluginManager.h
 	ApeIPlugin.h
