@@ -45,6 +45,7 @@ SOFTWARE.*/
 #include "ApeIFileGeometry.h"
 #include "ApeIIndexedFaceSetGeometry.h"
 #include "ApeIManualMaterial.h"
+#include "ApeIFileTexture.h"
 
 #define THIS_PLUGINNAME "ApeAssimpAssetLoaderPlugin"
 
