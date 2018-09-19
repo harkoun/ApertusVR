@@ -54,6 +54,7 @@ SOFTWARE.*/
 #include "ApeIFileGeometry.h"
 #include "ApeIMainWindow.h"
 #include "ApeIPointCloud.h"
+#include "ApeIRayGeometry.h"
 
 #define THIS_PLUGINNAME "ApeGyorPlugin"
 
