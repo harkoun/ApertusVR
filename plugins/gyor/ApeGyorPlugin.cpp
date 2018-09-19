@@ -8,6 +8,8 @@ Ape::ApeGyorPlugin::ApeGyorPlugin()
 	mpEventManager = Ape::IEventManager::getSingletonPtr();
 	mpEventManager->connectEvent(Ape::Event::Group::NODE, std::bind(&ApeGyorPlugin::eventCallBack, this, std::placeholders::_1));
 	mpScene = Ape::IScene::getSingletonPtr();
+	mUserNode = Ape::NodeWeakPtr();
+	mStateText = Ape::EntityWeakPtr();
 	LOG_FUNC_LEAVE();
 }
 
@@ -117,15 +119,17 @@ void Ape::ApeGyorPlugin::eventCallBack(const Ape::Event& event)
 	//}
 }
 
-void Ape::ApeGyorPlugin::Init()
+void Ape::ApeGyorPlugin::createSkyBox()
 {
-	LOG_FUNC_ENTER();
-
 	if (auto skyBoxMaterial = std::static_pointer_cast<Ape::IFileMaterial>(mpScene->createEntity("skyBox", Ape::Entity::MATERIAL_FILE).lock()))
 	{
 		skyBoxMaterial->setFileName("skyBox.material");
 		skyBoxMaterial->setAsSkyBox();
 	}
+}
+
+void Ape::ApeGyorPlugin::createPlane()
+{
 	if (auto planeNode = mpScene->createNode("planeNode").lock())
 	{
 		planeNode->setPosition(Ape::Vector3(0, -20, 0));
@@ -141,6 +145,10 @@ void Ape::ApeGyorPlugin::Init()
 			}
 		}
 	}
+}
+
+void Ape::ApeGyorPlugin::createLights()
+{
 	if (auto light = std::static_pointer_cast<Ape::ILight>(mpScene->createEntity("light", Ape::Entity::LIGHT).lock()))
 	{
 		light->setLightType(Ape::Light::Type::DIRECTIONAL);
@@ -155,6 +163,40 @@ void Ape::ApeGyorPlugin::Init()
 		light->setDiffuseColor(Ape::Color(0.5f, 0.5f, 0.6f));
 		light->setSpecularColor(Ape::Color(0.6f, 0.6f, 0.7f));
 	}
+}
+
+void Ape::ApeGyorPlugin::createTexts()
+{
+	if (auto userNode = mUserNode.lock())
+	{
+		if (auto stateTextNode = mpScene->createNode("stateNode").lock())
+		{
+			stateTextNode->setParentNode(mUserNode);
+			stateTextNode->setPosition(Ape::Vector3(0, -20, -50));
+
+			mStateText = mpScene->createEntity("stateText", Ape::Entity::GEOMETRY_TEXT);
+			if (auto stateText = std::static_pointer_cast<Ape::ITextGeometry>(mStateText.lock()))
+			{
+				stateText->setCaption("stateText");
+				stateText->showOnTop(true);
+				stateText->setParentNode(stateTextNode);
+			}
+		}
+	}
+}
+
+void Ape::ApeGyorPlugin::Init()
+{
+	LOG_FUNC_ENTER();
+
+	if (auto userNode = mpScene->getNode(mpSystemConfig->getSceneSessionConfig().generatedUniqueUserNodeName).lock())
+		mUserNode = userNode;
+
+	createSkyBox();
+	createPlane();
+	createLights();
+	createTexts();
+
 	LOG_FUNC_LEAVE();
 }
 
