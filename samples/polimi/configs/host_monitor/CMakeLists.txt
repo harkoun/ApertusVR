@@ -1,6 +1,6 @@
 #MIT License
 #
-#Copyright (c) 2016 MTA SZTAKI
+#Copyright (c) 2018 MTA SZTAKI
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
 #of this software and associated documentation files (the "Software"), to deal
@@ -20,8 +20,16 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
 
-add_subdirectory (local_monitor)
-add_subdirectory (host_monitor)
-add_subdirectory (guest_htcVive)
-add_subdirectory (local_htcVive)
+set (CONFIGS
+	ApeOgreRenderPlugin.json
+	ApeAssimpAssetLoaderPlugin.json
+	ApeOisUserInputPlugin.json
+	ApeSystem.json
+	)
 
+add_custom_target(
+    Configs_polimi_host_monitor ALL
+    SOURCES ${CONFIGS}
+)
+
+set_property (TARGET Configs_polimi_host_monitor PROPERTY FOLDER "Samples/Polimi/Configs")
