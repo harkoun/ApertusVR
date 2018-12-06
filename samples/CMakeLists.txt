@@ -175,6 +175,11 @@ if (${APE_SAMPLES_Gyor})
 	add_subdirectory (gyor)
 endif ()
 
+option(APE_SAMPLES_GyorPathPlanning "APE_SAMPLES_GyorPathPlanning?" ON )
+if (${APE_SAMPLES_GyorPathPlanning})
+	add_subdirectory (gyorPathPlanning)
+endif ()
+
 option(APE_SAMPLES_RobotCalibration "APE_SAMPLES_RobotCalibration?" ON )
 if (${APE_SAMPLES_RobotCalibration})
 	add_subdirectory (robotCalibration)
