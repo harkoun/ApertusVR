@@ -202,10 +202,14 @@ void Ape::AssimpAssetLoaderPlugin::createNode(int assimpSceneID, aiNode* assimpN
 						asssimpMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &path);
 						diffuseTextureFileName = path.data;
 					}
-					material->setDiffuseColor(Ape::Color(colorDiffuse.r, colorDiffuse.g, colorDiffuse.b, opacity));
-					material->setSpecularColor(Ape::Color(colorSpecular.r, colorSpecular.g, colorSpecular.b, opacity));
-					material->setAmbientColor(Ape::Color(colorAmbient.r, colorAmbient.g, colorAmbient.b));
-					material->setEmissiveColor(Ape::Color(colorEmissive.r, colorEmissive.g, colorEmissive.b));
+					if (!colorDiffuse.IsBlack())
+						material->setDiffuseColor(Ape::Color(colorDiffuse.r, colorDiffuse.g, colorDiffuse.b, opacity));
+					if (!colorSpecular.IsBlack())
+						material->setSpecularColor(Ape::Color(colorSpecular.r, colorSpecular.g, colorSpecular.b, opacity));
+					if (!colorAmbient.IsBlack())
+						material->setAmbientColor(Ape::Color(colorAmbient.r, colorAmbient.g, colorAmbient.b));
+					if (!colorEmissive.IsBlack())
+						material->setEmissiveColor(Ape::Color(colorEmissive.r, colorEmissive.g, colorEmissive.b));
 
 					if (sceneBlendingType == aiBlendMode_Additive)
 					{
@@ -230,7 +234,7 @@ void Ape::AssimpAssetLoaderPlugin::createNode(int assimpSceneID, aiNode* assimpN
 				Ape::GeometryNormals normals = Ape::GeometryNormals();
 				if (assimpMesh->HasNormals() && !mAssimpAssetConfigs[assimpSceneID].regenerateNormals)
 				{
-					for (int i = 0; i < assimpMesh->mNumFaces; i++)
+					for (int i = 0; i < assimpMesh->mNumVertices; i++)
 					{
 						aiVector3D assimpNormal = assimpMesh->mNormals[i];
 						normals.push_back(assimpNormal.x);
@@ -346,7 +350,7 @@ void Ape::AssimpAssetLoaderPlugin::loadConfig()
 					if (assetMemberIterator->name == "file")
 					{
 						std::stringstream assimpAssetFileNamePath;
-						assimpAssetFileNamePath << APE_SOURCE_DIR << assetMemberIterator->value.GetString();
+						assimpAssetFileNamePath << assetMemberIterator->value.GetString();
 						assetConfig.file = assimpAssetFileNamePath.str();
 						std::string fileName = assimpAssetFileNamePath.str().substr(assimpAssetFileNamePath.str().find_last_of("/\\") + 1);
 						std::string fileExtension = assimpAssetFileNamePath.str().substr(assimpAssetFileNamePath.str().find_last_of("."));

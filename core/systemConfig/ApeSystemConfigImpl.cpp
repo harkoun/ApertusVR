@@ -137,7 +137,7 @@ Ape::SystemConfigImpl::SystemConfigImpl(std::string folderPath)
 					for (auto& resourceLocation : jsonDocument["sceneSession"]["sessionResourceLocation"].GetArray())
 					{
 						std::stringstream sessionResourceLocation;
-						sessionResourceLocation << APE_SOURCE_DIR << resourceLocation.GetString();
+						sessionResourceLocation << resourceLocation.GetString();
 						mSceneSessionConfig.sessionResourceLocation.push_back(sessionResourceLocation.str());
 					}
 				}
