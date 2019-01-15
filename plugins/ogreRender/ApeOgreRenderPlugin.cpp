@@ -2097,6 +2097,8 @@ void Ape::OgreRenderPlugin::Init()
 						ogreRenderWindowConfig.name = renderWindowMemberIterator->value.GetString();
 					else if (renderWindowMemberIterator->name == "monitorIndex")
 						ogreRenderWindowConfig.monitorIndex = renderWindowMemberIterator->value.GetInt();
+					else if (renderWindowMemberIterator->name == "hidden")
+						ogreRenderWindowConfig.hidden = renderWindowMemberIterator->value.GetBool();
 					else if (renderWindowMemberIterator->name == "resolution")
 					{
 						for (rapidjson::Value::MemberIterator resolutionMemberIterator = 
@@ -2328,6 +2330,10 @@ void Ape::OgreRenderPlugin::Init()
 					APE_LOG_DEBUG("winDesc:" << " name=" << winDesc.name << " width=" << winDesc.width << " height=" << winDesc.height << " fullScreen=" << winDesc.useFullScreen);
 					mRenderWindows[winDesc.name] = mpRoot->createRenderWindow(winDesc.name, winDesc.width, winDesc.height, winDesc.useFullScreen, &winDesc.miscParams);
 					mRenderWindows[winDesc.name]->setDeactivateOnFocusChange(false);
+					if (mOgreRenderPluginConfig.ogreRenderWindowConfigList[i].hidden)
+					{
+						mRenderWindows[winDesc.name]->setHidden(true);
+					}
 					for (int j = 0; j < mOgreRenderPluginConfig.ogreRenderWindowConfigList[i].viewportList.size(); j++)
 					{
 						OgreCameraConfig cameraSetting = mOgreRenderPluginConfig.ogreRenderWindowConfigList[i].viewportList[j].camera;
